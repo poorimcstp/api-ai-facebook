@@ -37,7 +37,7 @@ class FacebookBot {
  
             var data = {
               from: 'Excited User <me@samples.mailgun.org>',
-              to: 'poorimcstp@gmail.co.th',
+              to: 'poorimcstp@gmail.com',
               subject: 'Hello',
               text: 'Testing some Mailgun awesomness!'
             };
