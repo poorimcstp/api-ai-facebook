@@ -31,6 +31,19 @@ class FacebookBot {
             console.log('Response as formatted message');
             this.sendFBMessage(sender, facebookResponseData)
                 .catch(err => console.error(err));
+            var api_key = 'key-ba814f3b76b7b575a24c8d69f1918851';
+            var domain = 'sandboxe684f8cb7f724476ab6bada89016c684.mailgun.org';
+            var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+ 
+            var data = {
+              from: 'Excited User <me@samples.mailgun.org>',
+              to: 'poorimcstp@gmail.co.th',
+              subject: 'Hello',
+              text: 'Testing some Mailgun awesomness!'
+            };
+            mailgun.messages().send(data, function (error, body) {
+              console.log(body);
+            });
         } else {
             async.eachSeries(facebookResponseData, (facebookMessage, callback) => {
                 if (facebookMessage.sender_action) {
