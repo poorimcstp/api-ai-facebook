@@ -18,19 +18,44 @@ const FB_TEXT_LIMIT = 640;
 const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
 const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 
-var api_key = 'key-ba814f3b76b7b575a24c8d69f1918851';
-var domain = 'sandboxe684f8cb7f724476ab6bada89016c684.mailgun.org';
-var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
- 
-var data = {
-    from: 'Excited User <me@samples.mailgun.org>',
-    to: 'poorimcstp@gmail.com',
-    subject: 'Hello',
-    text: 'Testing some Mailgun awesomness!'
-    };
-    mailgun.messages().send(data, function (error, body) {
-    console.log(body);
-    });
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+public class MGSample {
+
+    // ...
+
+    public static ClientResponse SendSimple() {
+
+        Client client = ClientBuilder.newClient();
+        client.register(HttpAuthenticationFeature.basic(
+            "api",
+            "key-ba814f3b76b7b575a24c8d69f1918851"
+        ));
+
+        WebTarget mgRoot = client.target("https://api.mailgun.net/v3");
+
+        Form reqData = new Form();
+        reqData.param("from", "Excited User <sandboxe684f8cb7f724476ab6bada89016c684.mailgun.org>");
+        reqData.param("to", "poorimcstp@outlook.com");
+        reqData.param("subject", "Hello");
+        reqData.param("text", "Testing out some Mailgun awesomeness!");
+
+        return mgRoot
+            .path("/{domain}/messages")
+            .resolveTemplate("domain", "sandboxe684f8cb7f724476ab6bada89016c684.mailgun.org")
+            .request(MediaType.APPLICATION_FORM_URLENCODED)
+            .buildPost(Entity.entity(reqData, MediaType.APPLICATION_FORM_URLENCODED))
+            .invoke(ClientResponse.class);
+    }
+}
 
 class FacebookBot {
     constructor() {
