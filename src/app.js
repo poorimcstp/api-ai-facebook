@@ -44,7 +44,7 @@ public class MGSample {
 
         Form reqData = new Form();
         reqData.param("from", "Excited User <sandboxe684f8cb7f724476ab6bada89016c684.mailgun.org>");
-        reqData.param("to", "poorimcstp@outlook.com");
+        reqData.param("to", "poorimcstp@gmail.com");
         reqData.param("subject", "Hello");
         reqData.param("text", "Testing out some Mailgun awesomeness!");
 
